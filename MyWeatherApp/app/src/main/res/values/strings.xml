@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">MyWeatherApp</string>
-    <string name="reflash">刷新当前天气</string>
-    <string name="select">选择城市</string>
-</resources>

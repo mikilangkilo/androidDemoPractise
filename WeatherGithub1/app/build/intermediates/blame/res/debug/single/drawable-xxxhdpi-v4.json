@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_cloudy_night.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_cloudy_night.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_thundershower.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_thundershower.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_moderaterain.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_moderaterain.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_overcast.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_overcast.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_haze.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_haze.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_hail.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_hail.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_cloudy.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_cloudy.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_heavyrain.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_heavyrain.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_sleet.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_sleet.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_sand.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_sand.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_foggy.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_foggy.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_snowstorm.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_snowstorm.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_lightrain.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_lightrain.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_na.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_na.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_sun_night.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_sun_night.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_sun.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_sun.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_lightsnow.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_lightsnow.png"
+    },
+    {
+        "merged": "G:\\myCodeHome\\WeatherGithub1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\ic_stat_icon_icerain.png",
+        "source": "G:\\myCodeHome\\WeatherGithub1\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_stat_icon_icerain.png"
+    }
+]
