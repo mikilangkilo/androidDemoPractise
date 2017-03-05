@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             Object[] pdus = (Object[])bundle.get("pdus");
             SmsMessage [] messages = new SmsMessage[pdus.length];
+            for(int i = 0;)
             
         }
     }
