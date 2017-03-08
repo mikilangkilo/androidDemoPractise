@@ -4,64 +4,62 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView imageView;
-    private Button button;
-    private int change;
 
+    private int Images[] = {R.mipmap.b1,R.mipmap.b2,R.mipmap.b3};
+    private int index = 0;
+    private ImageView imageView;
+    private TextView textView;
+    private Handler handler1 = new Handler();
+    private MyRunnable myRunnable = new MyRunnable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = (ImageView)findViewById(R.id.image);
-        button = (Button)findViewById(R.id.button);
-        change = 0;
-        button.setOnClickListener(new View.OnClickListener() {
+        textView = (TextView)findViewById(R.id.textView);
+        handler1.postDelayed(myRunnable,1000);//跑一个runnable
+        new Thread(){
             @Override
-            public void onClick(View v) {
-                change++;
-                if(change % 2 == 0){
-                    thread.start();
-                }
-            }
-        });
-    }
-
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0:
-                    imageView.setImageResource(R.mipmap.b1);
-                    break;
-                case 1:
-                    imageView.setImageResource(R.mipmap.b2);
-                    break;
-                case 2:
-                    imageView.setImageResource(R.mipmap.b3);
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
-    private Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            int i =1;
-            while (true){
-                handler.sendEmptyMessage((i++)%3);
+            public void run() {
                 try{
                     Thread.sleep(1000);
-                }catch (InterruptedException e){
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            textView.setText("100");
+//                        }
+//                    });
+                    Message msg = new Message();
+                    msg.arg1 = 88;
+                    handler2.sendMessage(msg);
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
+        }.start();
+    }
+
+    private Handler handler2 = new Handler(){//处理接收到的信息
+        @Override
+        public void handleMessage(Message msg) {
+            textView.setText(""+msg.arg1);
         }
-    });
+    };
+
+    class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            index ++ ;
+            index = index % 3;
+            imageView.setImageResource(Images[index]);
+            handler1.postDelayed(myRunnable,1000);//循环的跑下去
+        }
+    };
+
 
 }
