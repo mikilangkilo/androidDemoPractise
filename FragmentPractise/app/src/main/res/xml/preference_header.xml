@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <header android:fragment = "android.com.java.fragmentpractise.PreferenceActivity$Prefs1Fragment"
+        android:icon="@drawable/ic_settings_applications"
+        android:title="程序选项设置"
+        android:summary="设置应用的相关选项"/>
+    <header android:fragment="android.com.java.fragmentpractise.PreferenceActivity$Prefs2Fragment"
+        android:icon="@drawable/ic_settings_display"
+        android:title="界面选项设置"
+        android:summary="设置显示界面的相关选项">
+        <extra android:name="website"
+            android:value="www.baidu.com"/>
+    </header>
+    <header
+        android:icon="@drawable/ic_settings_display"
+        android:title="使用Intent"
+        android:summary="使用Intent启动某个Activity">
+        <intent android:action="android.intent.action.VIEW"
+            android:data="http://www.baidu.com"/>
+    </header>
+
+
+</PreferenceScreen>
