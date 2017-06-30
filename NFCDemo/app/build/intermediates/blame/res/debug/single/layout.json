@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/merged/debug/layout/main.xml",
+        "source": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/src/main/res/layout/main.xml"
+    },
+    {
+        "merged": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/merged/debug/layout/foreground_dispatch.xml",
+        "source": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/src/main/res/layout/foreground_dispatch.xml"
+    }
+]

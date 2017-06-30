@@ -2,19 +2,40 @@ package android.com.java.nfcdemo;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
+import android.nfc.tech.MifareUltralight;
+import android.nfc.tech.Ndef;
 import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 public class MainActivity extends AppCompatActivity {
     NfcAdapter nfcAdapter;
     TextView promt;
+    Intent newIntent;
+    PendingIntent pendingIntent;
     private static final String TAG = "MainActivity";
+    IntentFilter[] mFilters;
+    String[][] mTechList;
+    int mCount = 0;
+    NfcA nfcA;
+    Ndef ndef;
+    MifareUltralight mifareUltralight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,19 +44,26 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"onCreate");
         promt = (TextView)findViewById(R.id.promt);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
+        newIntent = new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        pendingIntent = PendingIntent.getActivity(
+                this, 0, newIntent, 0);
+        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+        try{
+            ndef.addDataType("*/*");
+        }catch (IntentFilter.MalformedMimeTypeException e){
+            Log.e(TAG,"crash = "+e);
+        }
+        mFilters = new IntentFilter[]{ndef,};
+        mTechList = new String[][]{new String[]{NfcA.class.getName()}};
     }
 
     @Override
     protected void onResume() {
         Log.i(TAG,"onResume");
         super.onResume();
-        Intent newIntent = new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, newIntent, 0);
+
         nfcAdapter.enableForegroundDispatch(
-                this, pendingIntent, null, new String[][] {
-                        new String[] { NfcA.class.getName() } });
+                this, pendingIntent, mFilters, mTechList);
         if (nfcAdapter == null){
             promt.setText("设备不支持nfc");
             finish();
@@ -46,23 +74,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-        Log.d(TAG,"getIntent().getAction()="+getIntent().getAction());
-        Log.d(TAG,"? = "+NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction()));
-        Log.d(TAG,"2 = "+NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction()));
-        Log.d(TAG,"3 = "+NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction()));
-        Log.d(TAG,"4 = "+NfcAdapter.ACTION_ADAPTER_STATE_CHANGED.equals(getIntent().getAction()));
 
-        if ( NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction())){
-            Log.d(TAG,"tag is ov");
-            processIntent(getIntent());
-        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i(TAG,"onNewIntent");
-//        Toast.makeText(MainActivity.this, "onNewIntent + intent = "+intent,Toast.LENGTH_SHORT).show();
         Log.d(TAG,"new intent = "+intent.getAction());
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())){
             processIntent(intent);
@@ -96,24 +114,29 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"processIntent");
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         Log.d(TAG,"tag.getId = "+tag.getId());
-        promt.setText(tag.getId().toString());
-
+        for (String tech: tag.getTechList()){
+            Log.d(TAG,"tech = "+tech);
+        }
+        Log.d(TAG,"tag.toString ="+tag.toString());
+        Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        if (rawMessages != null){
+            NdefMessage[] messages = new NdefMessage[rawMessages.length];
+            for (int i = 0; i < rawMessages.length; i++){
+                messages[i] = (NdefMessage)rawMessages[i];
+                Log.d(TAG,"i = "+i+", message = "+messages[i]);
+            }
+        }
+        promt.setText("Discover TAG No."+ ++mCount+" with Intent = "+intent);
+        nfcA = NfcA.get(tag);
+        Log.d(TAG,"nfcA = "+nfcA);
+        Log.d(TAG,"atqa = "+nfcA.getAtqa());
+        ndef = Ndef.get(tag);
+        Log.d(TAG,"ndef = "+ndef);
+        mifareUltralight = MifareUltralight.get(tag);
+        Log.d(TAG,"mifareUltralight = "+mifareUltralight);
         if (tag == null){
             Log.e(TAG,"no tag!!!!");
             return;
         }
-        String[] techList = tag.getTechList();
-        Parcel oldParcel = Parcel.obtain();
-        tag.writeToParcel(oldParcel, 0);
-        int len = oldParcel.readInt();
-        byte[] id = new byte[0];
-        if (len >= 0){
-            id = new byte[len];
-            oldParcel.readByteArray(id);
-        }
-        int[] oldTechList = new int[oldParcel.readInt()];
-        oldParcel.readIntArray(oldTechList);
-
     }
-
 }

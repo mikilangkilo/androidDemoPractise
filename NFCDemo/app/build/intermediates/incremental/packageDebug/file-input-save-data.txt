@@ -1,0 +1,24 @@
+#Internal package file, do not edit.
+#Fri Jun 30 12:08:46 CST 2017
+2.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
+5.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/res/drawable-hdpi-v4/icon.png
+5.set=ANDROID_RESOURCE
+3.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+6.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/resources.arsc
+2.set=DEX
+4.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+count=7
+0.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/res/xml/filter_nfc.xml
+5.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+4.set=ANDROID_RESOURCE
+6.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+1.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/AndroidManifest.xml
+1.set=ANDROID_RESOURCE
+2.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
+6.set=ANDROID_RESOURCE
+0.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+3.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/res/layout/foreground_dispatch.xml
+3.set=ANDROID_RESOURCE
+1.base=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_
+4.file=/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/NFCDemo/app/build/intermediates/res/resources-debug.ap_/res/layout/main.xml
+0.set=ANDROID_RESOURCE
