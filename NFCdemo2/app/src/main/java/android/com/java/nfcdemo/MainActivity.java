@@ -10,6 +10,7 @@ import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
+import android.nfc.tech.NdefFormatable;
 import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -113,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         //TODO
         Log.i(TAG,"processIntent");
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        if (tag == null){
+            Log.e(TAG,"no tag!!!!");
+            return;
+        }
         Log.d(TAG,"tag.getId = "+tag.getId());
         for (String tech: tag.getTechList()){
             Log.d(TAG,"tech = "+tech);
@@ -130,13 +135,33 @@ public class MainActivity extends AppCompatActivity {
         nfcA = NfcA.get(tag);
         Log.d(TAG,"nfcA = "+nfcA);
         Log.d(TAG,"atqa = "+nfcA.getAtqa());
+        Log.d(TAG,"nfca.getSak() = "+nfcA.getSak());
+        Log.d(TAG,"nfca.getTimeOut = "+nfcA.getTimeout());
         ndef = Ndef.get(tag);
         Log.d(TAG,"ndef = "+ndef);
+        if (ndef != null) {
+            Log.d(TAG, "ndef.getType = " + ndef.getType());
+            Log.d(TAG, "ndef.getMax = " + ndef.getMaxSize());
+            Log.d(TAG, "ndef.isWritable = " + ndef.isWritable());
+            Log.d(TAG, "ndef.canMakeReadOnly = " + ndef.canMakeReadOnly());
+        }
         mifareUltralight = MifareUltralight.get(tag);
         Log.d(TAG,"mifareUltralight = "+mifareUltralight);
-        if (tag == null){
-            Log.e(TAG,"no tag!!!!");
-            return;
+        if (mifareUltralight != null) {
+            Log.d(TAG, "mifareUltralight.getType() = " + mifareUltralight.getType());
+        }
+        MifareClassic mifareClassic = MifareClassic.get(tag);
+        Log.d(TAG, "mifareClassic = "+ mifareClassic);
+        if (mifareClassic != null){
+            Log.d(TAG,"mifareClassic.getSize() = "+mifareClassic.getSize());
+            Log.d(TAG,"mifareClassic.getType() = " + mifareClassic.getType());
+            Log.d(TAG, "mifareClassic.getTimeOut = "+mifareClassic.getTimeout());
+            Log.d(TAG,"mifareClassic.getBlockCount = "+mifareClassic.getBlockCount());
+        }
+        NdefFormatable ndefFormatable = NdefFormatable.get(tag);
+        Log.d(TAG, "ndefFormatable = "+ndefFormatable);
+        if (ndefFormatable != null){
+//            Log.d(TAG, "ndeFormatable. = "+ndefFormatable)
         }
     }
 }
