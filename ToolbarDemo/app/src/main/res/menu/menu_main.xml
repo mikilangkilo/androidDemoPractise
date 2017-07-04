@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item android:id="@+id/export_data"
+        android:title="导出数据"
+        android:orderInCategory="1"
+        app:showAsAction="always"/>
+    <item android:id="@+id/nfc_bind"
+        android:title="NFC绑定"
+        android:orderInCategory="2"
+        app:showAsAction="always"/>
+    <item android:id="@+id/login"
+        android:title="用户登录"
+        android:orderInCategory="3"
+        app:showAsAction="never"/>
+    <item android:id="@+id/upload_data"
+        android:title="上传病床数据"
+        android:orderInCategory="4"
+        app:showAsAction="never"/>
+    <item android:id="@+id/setting"
+        android:title="设置"
+        android:orderInCategory="5"
+        app:showAsAction="never"/>
+
+
+
+</menu>
