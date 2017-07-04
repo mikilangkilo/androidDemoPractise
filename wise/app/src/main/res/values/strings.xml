@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Wise</string>
+    <string name="app_name">WISE</string>
+    <string name="toolbar_export_data">导出数据</string>
+    <string name="toolbar_nfc_bind">NFC绑定</string>
+    <string name="toolbar_user_login">用户登录</string>
+    <string name="toolbar_upload_sickbed_data">上传病床数据</string>
+    <string name="toolbar_setting">设置</string>
+    <string name="login_failure">登录失败</string>
+    <string name="login_success">登录成功</string>
+    <string name="user">用户</string>
+    <string name="user_name">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登陆</string>
+    <string name="failure">失败</string>
+    <string name="success">成功</string>
+    <string name="cancel">取消</string>
+    <string name="api_host">网络域名</string>
+    <string name="api_host_default">demo.highwho.com</string>
+    <string name="api_protocol">api协议</string>
+    <string name="api_protocol_default">http</string>
 </resources>
