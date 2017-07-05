@@ -43,6 +43,7 @@ public class AuthenticManager {
         Logger.i(TAG, "login");
         String url = mApp.getPreferenceReader().getApiUri(String.format("/token?username=%s&password=%s",
                 userName.trim(), password.trim()));
+        Logger.d(TAG, url);
         Request<JSONObject> request = new JsonObjectRequest(
                 Request.Method.POST,
                 url,

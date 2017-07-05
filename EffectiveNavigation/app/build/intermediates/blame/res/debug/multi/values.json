@@ -1,0 +1,83 @@
+[
+    {
+        "outputFile": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/EffectiveNavigation/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 57,
+                    "endOffset": 108
+                },
+                "from": {
+                    "file": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/EffectiveNavigation/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 620,
+                        "endColumn": 57,
+                        "endOffset": 673
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 113,
+                    "endColumn": 59,
+                    "endOffset": 168
+                },
+                "from": {
+                    "file": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/EffectiveNavigation/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 838,
+                        "endColumn": 59,
+                        "endOffset": 893
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 173,
+                    "endColumn": 73,
+                    "endOffset": 242
+                },
+                "from": {
+                    "file": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/EffectiveNavigation/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 764,
+                        "endColumn": 73,
+                        "endOffset": 833
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 247,
+                    "endColumn": 83,
+                    "endOffset": 326
+                },
+                "from": {
+                    "file": "/Users/yinpengcheng/Desktop/AndroidDemoPractise/androidDemoPractise/EffectiveNavigation/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 679,
+                        "endColumn": 83,
+                        "endOffset": 758
+                    }
+                }
+            }
+        ]
+    }
+]

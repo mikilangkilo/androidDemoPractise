@@ -18,4 +18,5 @@
     <string name="api_host_default">demo.highwho.com</string>
     <string name="api_protocol">api协议</string>
     <string name="api_protocol_default">http</string>
+
 </resources>
