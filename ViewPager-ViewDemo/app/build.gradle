@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId "demo.ypc.tablayoutdemo"
+        applicationId "demo.ypc.viewpager_viewdemo"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
