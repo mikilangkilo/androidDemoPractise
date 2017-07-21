@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择状态："
+        android:textColor="@android:color/white"
+        android:textSize="20px" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RadioButton android:text="在线"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+        <RadioButton android:text="离线"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+        <RadioButton android:text="隐身"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+    </RadioGroup>
+
+</LinearLayout>

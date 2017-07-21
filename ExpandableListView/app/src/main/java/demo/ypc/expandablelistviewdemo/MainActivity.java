@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         groupArray = new ArrayList<String>();
         childArray = new ArrayList<List<String>>();
         groupArray.add("第一行");
-        groupArray.add("dierhang");
+//        groupArray.add("dierhang");
         List<String> tempArray = new ArrayList<String>();
         tempArray.add("1");
         tempArray.add("2");

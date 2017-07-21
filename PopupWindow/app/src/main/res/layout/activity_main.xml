@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="hello" />
+
+    <Button
+        android:id="@+id/button01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="以自己为Anchor，不偏移" />
+
+    <Button
+        android:id="@+id/button02"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="以自己为Anchor，有偏移" />
+
+    <Button
+        android:id="@+id/button03"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="以屏幕中心为参照，不偏移（正中间）" />
+
+    <Button
+        android:id="@+id/button04"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="以屏幕下方为参照，下方中间" />
+
+</LinearLayout>
