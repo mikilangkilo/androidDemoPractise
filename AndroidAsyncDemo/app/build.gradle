@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId "demo.ypc.nanohttpd"
+        applicationId "demo.ypc.androidasyncdemo"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
@@ -26,7 +26,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'org.nanohttpd:nanohttpd-webserver:2.2.0'
+    compile 'com.koushikdutta.async:androidasync:2.2.1'
     compile 'com.apkfuns.logutils:library:1.5.1.1'
     testCompile 'junit:junit:4.12'
 }
