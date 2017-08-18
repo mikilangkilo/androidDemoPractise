@@ -28,5 +28,7 @@ dependencies {
     compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.apkfuns.logutils:library:1.5.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.arialyy.aria:aria-core:3.2.20'
+    annotationProcessor 'com.arialyy.aria:aria-compiler:3.2.20'
     testCompile 'junit:junit:4.12'
 }
