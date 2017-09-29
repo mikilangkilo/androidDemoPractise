@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button addButton;
     int index;
     MyAdapter myAdapter;
+    private float mFirstY, mCurrentY, mTouchSlop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,60 @@ public class MainActivity extends AppCompatActivity {
                 index ++;
             }
         });
+//        listView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                switch (motionEvent.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//                        LogUtils.e("actionDown");
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        LogUtils.e("actionMove");
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        LogUtils.e("actionUp");
+//                        break;
+//                    case MotionEvent.ACTION_BUTTON_PRESS:
+//                        LogUtils.e("actionButtonPress");
+//                        break;
+//                    case MotionEvent.ACTION_BUTTON_RELEASE:
+//                        LogUtils.e("actionButtonRelease");
+//                        break;
+//                    case MotionEvent.ACTION_CANCEL:
+//                        LogUtils.e("actionCancel");
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                switch (i){
+                    case SCROLL_STATE_IDLE:
+                        LogUtils.e("scrollStateIdle");
+                        break;
+                    case SCROLL_STATE_FLING:
+                        LogUtils.e("scrollStateFling");
+                        break;
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                        LogUtils.e("scrollStateTouchScroll");
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                LogUtils.e("firstVisibleItem : "+i);
+                LogUtils.e("visibleItemCount : "+i1);
+                LogUtils.e("totalItemCount : "+i2);
+            }
+        });
+
+        View header = new View(this);
+        header.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 400));
+        listView.addHeaderView(header);
+
     }
 
     @Override
@@ -92,5 +149,6 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(contentList.get(position));
             return rootView;
         }
+
     }
 }
