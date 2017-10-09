@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Scroller;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -42,11 +44,31 @@ public class MainActivity extends AppCompatActivity {
         index = 0;
         myAdapter = new MyAdapter(this, R.layout.item);
         listView.setAdapter(myAdapter);
+        Scroller scroller = new Scroller(this){
+            @Override
+            public boolean computeScrollOffset() {
+                return super.computeScrollOffset();
+
+            }
+
+        };
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myAdapter.add(index + "");
                 myAdapter.notifyDataSetChanged();
+//                ((View)addButton.getParent()).scrollBy(3,3);
+//                ((View)addButton.getParent()).offsetLeftAndRight(3);
+//                ((View)addButton.getParent()).offsetTopAndBottom(3);
+//                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)addButton.getLayoutParams();
+//                layoutParams.leftMargin = 3;
+//                layoutParams.topMargin = 3;
+//                addButton.setLayoutParams( layoutParams );
+                ViewGroup.LayoutParams params = (ViewGroup.LayoutParams)addButton.getLayoutParams();
+                params.height = 100;
+                params.width = 200;
+
+                addButton.setLayoutParams(params);
                 index ++;
             }
         });
