@@ -12,6 +12,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
+        if (!LeakCanary.isInAnalyzerProcess(this)){
+            LeakCanary.install(this);
+        }
+
     }
 }
