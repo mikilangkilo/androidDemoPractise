@@ -6,20 +6,23 @@ import cn.bmob.v3.BmobObject;
  * Created by yinpengcheng on 2017/10/12.
  */
 
-public class Person extends BmobObject {
-    private String name;
-    private String address;
+public class User extends BmobObject {
+    String name;
+    String password;
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public String getAddress() {
-        return address;
+
+    public String getPassword() {
+        return password;
     }
-    public void setAddress(String address) {
-        this.address = address;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -32,7 +32,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
 //    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.alibaba:fastjson:1.2.37'
-    compile 'cn.bmob.android:http-legacy:1.0'//for android 6.0 bmob
     compile 'cn.bmob.android:bmob-sdk:3.5.5'//for datasave and file bmob
 //    compile 'cn.bmob.android:bmob-push:0.8'//for notification push bmob
 //    compile 'cn.bmob.android:bmob-im:2.0.5@aar'

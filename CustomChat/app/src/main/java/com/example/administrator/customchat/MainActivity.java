@@ -2,15 +2,9 @@ package com.example.administrator.customchat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
-
-import com.example.administrator.customchat.Application.App;
-import com.example.administrator.customchat.Entity.Person;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,18 +28,5 @@ public class MainActivity extends AppCompatActivity {
         .setFileExpiration(2500)
         .build();
         Bmob.initialize(config);
-        Person person = new Person();
-        person.setName("gg");
-        person.setAddress("ggggg");
-        person.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if (e == null){
-                    Toast.makeText(App.getContext(),"succeed!", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(App.getContext(), "failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }
