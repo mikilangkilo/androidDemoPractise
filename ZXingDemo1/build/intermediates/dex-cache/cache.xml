@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="G:\AndroidDemo\androidDemoPractise\ZXingDemo1\app\libs\zxing.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="96b67e377ff4637ff1fa3bbe9ad7183773935f39">
+        <dex dex="G:\AndroidDemo\androidDemoPractise\ZXingDemo1\app\build\intermediates\pre-dexed\debug\zxing_8e9384a953e247fca2f3284d9aa9e85ac62061a1.jar" />
+    </item>
+
+</items>
