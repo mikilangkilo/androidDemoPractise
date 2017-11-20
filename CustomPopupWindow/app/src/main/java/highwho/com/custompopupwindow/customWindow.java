@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -63,7 +64,9 @@ public class customWindow {
         mPopupWindow.setContentView(mRootView);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setWindowLayoutMode(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY);
+//        mPopupWindow.setWindowLayoutMode(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.showAtLocation(rootview, Gravity.CENTER, 0,0);
         handler.postDelayed(new Runnable() {
             @Override
