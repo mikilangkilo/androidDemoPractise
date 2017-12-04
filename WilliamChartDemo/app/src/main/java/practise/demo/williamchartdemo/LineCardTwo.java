@@ -1,14 +1,21 @@
 package practise.demo.williamchartdemo;
 
+import android.animation.PropertyValuesHolder;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.widget.CardView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
 import com.db.chart.model.Point;
 import com.db.chart.renderer.AxisRenderer;
+import com.db.chart.tooltip.Tooltip;
 import com.db.chart.util.Tools;
 import com.db.chart.view.LineChartView;
 
@@ -34,12 +41,14 @@ public class LineCardTwo extends CardController {
                             85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f,
                             85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f}};
 
-
-    public LineCardTwo(CardView card) {
+    private Tooltip mTip;
+    private Context mContext;
+    public LineCardTwo(CardView card, Context context) {
 
         super(card);
 
         mChart = (LineChartView) card.findViewById(R.id.chart);
+        mContext = context;
     }
 
 
@@ -47,7 +56,27 @@ public class LineCardTwo extends CardController {
     public void show(Runnable action) {
 
         super.show(action);
+        mTip = new Tooltip(mContext, R.layout.linechart_three_tooltip, R.id.value);
 
+        ((TextView) mTip.findViewById(R.id.value)).setTypeface(
+                Typeface.createFromAsset(mContext.getAssets(), "OpenSans-Semibold.ttf"));
+
+        mTip.setVerticalAlignment(Tooltip.Alignment.BOTTOM_TOP);
+        mTip.setDimensions((int) Tools.fromDpToPx(58), (int) Tools.fromDpToPx(25));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+
+            mTip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f),
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)).setDuration(200);
+
+            mTip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 0),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f),
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 0f)).setDuration(200);
+
+            mTip.setPivotX(Tools.fromDpToPx(65) / 2);
+            mTip.setPivotY(Tools.fromDpToPx(25));
+        }
         LineSet dataset = new LineSet(mLabels, mValues[0]);
         int colors[] = new int[]{0xffffffff,0xff004f7f};
         float positions[] = new float[]{0f, 1f};
@@ -85,9 +114,12 @@ public class LineCardTwo extends CardController {
         mChart.setXLabels(AxisRenderer.LabelPosition.OUTSIDE)
                 .setYLabels(AxisRenderer.LabelPosition.OUTSIDE)
                 .setGrid(4, 7, gridPaint)
+                .setTooltips(mTip)
                 .setValueThreshold(80f, 80f, thresPaint)
                 .setAxisBorderValues(0, 110)
-                .show(new Animation().fromXY(0, .5f).withEndAction(action));
+//                .show(new Animation().fromXY(0, .5f).withEndAction(action))
+        .show();
+        ;
     }
 
 
@@ -110,7 +142,7 @@ public class LineCardTwo extends CardController {
 
         super.dismiss(action);
 
-        mChart.dismiss(new Animation().fromXY(1, .5f).withEndAction(action));
+//        mChart.dismiss(new Animation().fromXY(1, .5f).withEndAction(action));
     }
 
 }

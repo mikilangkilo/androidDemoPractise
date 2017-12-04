@@ -27,8 +27,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Region;
 import android.graphics.Shader;
+import android.os.Handler;
 import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.db.chart.util.Tools;
 import com.db.chart.model.ChartSet;
@@ -37,6 +39,7 @@ import com.db.chart.model.Point;
 import com.db.williamchart.R;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 /**
@@ -55,8 +58,9 @@ public class LineChartView extends ChartView {
      * Radius clickable region
      */
     private float mClickableRadius;
-
-
+    private int mOffset = 0;
+    private Handler mHandler = new Handler();
+    private boolean mIsRefresh;
     public LineChartView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
@@ -105,20 +109,18 @@ public class LineChartView extends ChartView {
     }
 
     @Override
-    public void onDrawChart(Canvas canvas, ArrayList<ChartSet> data) {
+    public void onDrawChart(final Canvas canvas, ArrayList<ChartSet> data) {
 
-        LineSet lineSet;
+//        final LineSet lineSet;
         Path linePath;
-
-        for (ChartSet set : data) {
-
-            lineSet = (LineSet) set;
-
+        Log.d("gg",data.size()+"");
+        if (data.size() == 1){
+            final LineSet lineSet = (LineSet) data.get(0);
             if (lineSet.isVisible()) {
 
                 mStyle.mLinePaint.setColor(lineSet.getColor());
-                int[] colors = new int[]{0x000000ff, Color.BLUE,Color.BLUE};
-                float[] position = new float[]{0.10f,0.2f,0.7f};
+                int[] colors = new int[]{0x000000ff, Color.BLUE};
+                float[] position = new float[]{0.1f,0.5f};
                 LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
                 mStyle.mLinePaint.setShader(lg);
                 mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
@@ -138,9 +140,91 @@ public class LineChartView extends ChartView {
 
                 //Draw line
                 canvas.drawPath(linePath, mStyle.mLinePaint);
-
                 //Draw points
-                drawPoints(canvas, lineSet);
+//                while (true){
+                Log.d("gg","refresh");
+//                mOffset = mOffset%10+3;
+                drawPoints(canvas, lineSet, mOffset+0f);
+//                if (mIsRefresh){
+                mOffset = mOffset%10+3;
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        postInvalidate();
+//                    }
+//                },1000);
+                postInvalidateDelayed(500);
+//                }else {
+//                    mOffset = 0;
+//                }
+//                }
+//                final Runnable runnable;
+//                runnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
+//                        postInvalidate();
+//                        Log.d("line","refresh");
+//                        postDelayed(this,500);
+//                    }
+//                };
+//                post(runnable);
+
+            }
+        }else {
+            for (ChartSet set : data) {
+
+                final LineSet lineSet = (LineSet) set;
+
+                if (lineSet.isVisible()) {
+
+                    mStyle.mLinePaint.setColor(lineSet.getColor());
+                    int[] colors = new int[]{0x000000ff, Color.BLUE};
+                    float[] position = new float[]{0.1f,0.5f};
+                    LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
+                    mStyle.mLinePaint.setShader(lg);
+                    mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
+                    applyShadow(mStyle.mLinePaint, lineSet.getAlpha(), lineSet.getShadowDx(), lineSet
+                            .getShadowDy(), lineSet.getShadowRadius(), lineSet.getShadowColor());
+
+                    if (lineSet.isDashed()) mStyle.mLinePaint.setPathEffect(
+                            new DashPathEffect(lineSet.getDashedIntervals(), lineSet.getDashedPhase()));
+                    else mStyle.mLinePaint.setPathEffect(null);
+
+                    if (!lineSet.isSmooth()) linePath = createLinePath(lineSet);
+                    else linePath = createSmoothLinePath(lineSet);
+
+                    //Draw background
+                    if (lineSet.hasFill() || lineSet.hasGradientFill())
+                        canvas.drawPath(createBackgroundPath(new Path(linePath), lineSet), mStyle.mFillPaint);
+
+                    //Draw line
+                    canvas.drawPath(linePath, mStyle.mLinePaint);
+                    //Draw points
+//                while (true){
+                    Log.d("gg","refresh");
+//                mOffset = mOffset%10+3;
+                    drawPoints(canvas, lineSet, mOffset+0f);
+                    if (mIsRefresh){
+                        mOffset = mOffset%5+1;
+                        postInvalidateDelayed(500);
+                    }else {
+                        mOffset = 0;
+                    }
+//                }
+//                final Runnable runnable;
+//                runnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
+//                        postInvalidate();
+//                        Log.d("line","refresh");
+//                        postDelayed(this,500);
+//                    }
+//                };
+//                post(runnable);
+
+                }
             }
         }
 
@@ -173,7 +257,7 @@ public class LineChartView extends ChartView {
     /**
      * Responsible for drawing points
      */
-    private void drawPoints(Canvas canvas, LineSet set) {
+    private void drawPoints(Canvas canvas, LineSet set, float offset) {
 
         int begin = set.getBegin();
         int end = set.getEnd();
@@ -191,7 +275,7 @@ public class LineChartView extends ChartView {
                         .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
 
                 // Draw dot
-                canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius(), mStyle.mDotsPaint);
+                canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius()+offset, mStyle.mDotsPaint);
 
                 //Draw dots stroke
                 if (dot.hasStroke()) {

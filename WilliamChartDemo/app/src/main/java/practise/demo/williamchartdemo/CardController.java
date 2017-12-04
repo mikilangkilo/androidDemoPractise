@@ -73,7 +73,7 @@ public class CardController {
 
 
     public void init() {
-
+//        unlock();
         show(unlockAction);
     }
 

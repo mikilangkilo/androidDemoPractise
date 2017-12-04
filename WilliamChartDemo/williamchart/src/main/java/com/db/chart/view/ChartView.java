@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
@@ -149,6 +150,7 @@ public abstract class ChartView extends RelativeLayout {
      * Chart animation
      */
     private Animation mAnim;
+    private Handler mHandler = new Handler();
     /**
      * Executed only before the chart is drawn for the first time.
      * . borders are defined
@@ -360,6 +362,7 @@ public abstract class ChartView extends RelativeLayout {
                             getInnerChartBottom(), style.labelThresPaint);
 
             // Draw data
+            Log.e("gg","ondraw");
             if (!data.isEmpty()) onDrawChart(canvas, data);
 
             // Draw Axis Y
@@ -372,6 +375,7 @@ public abstract class ChartView extends RelativeLayout {
         }
 
         mIsDrawing = false;
+//        postInvalidateDelayed(500);
     }
 
 

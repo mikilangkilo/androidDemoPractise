@@ -39,10 +39,10 @@ class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> {
 
         switch (position) {
             case 0:
-                (new LineCardTwo(holder.cardView)).init();
+                (new LineCardTwo(holder.cardView,mContext)).init();
                 break;
             default:
-                (new LineCardTwo(holder.cardView)).init();
+                (new LineCardTwo(holder.cardView, mContext)).init();
                 break;
         }
     }
