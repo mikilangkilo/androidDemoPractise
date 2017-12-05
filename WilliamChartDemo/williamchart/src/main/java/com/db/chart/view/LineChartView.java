@@ -16,6 +16,7 @@
 
 package com.db.chart.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.os.Handler;
@@ -32,6 +34,8 @@ import android.os.Message;
 import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.db.chart.util.Tools;
 import com.db.chart.model.ChartSet;
@@ -40,6 +44,8 @@ import com.db.chart.model.Point;
 import com.db.williamchart.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
@@ -49,6 +55,22 @@ import java.util.logging.Logger;
  * Implements a line chart extending {@link ChartView}
  */
 public class LineChartView extends ChartView {
+    // 初始波纹半径
+    private float mMiniRadius = 7f;
+    //最大波纹半径
+    private float mMaxRadius = 24f;
+    //波纹持续时间
+    private long mWaveDuration = 5000;
+    //波纹创建时间间隔
+    private long mSpeed = 1000;
+    //波纹画笔
+    private Paint mWavePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    //波纹动画效果
+    private Interpolator mInterpolator = new AccelerateInterpolator();
+    //所有的水波纹
+    private List<ValueAnimator> mAnimatorList = new ArrayList<ValueAnimator>();
+    //是否开启水波纹
+    private boolean mIsRuning = false;
 
     private static final float SMOOTH_FACTOR = 0.15f;
 
@@ -56,46 +78,28 @@ public class LineChartView extends ChartView {
      * Style applied to line chart
      */
     private final Style mStyle;
-    private Timer timer;
     /**
      * Radius clickable region
      */
     private float mClickableRadius;
-    private int mOffset = 0;
-    private boolean mIsSizeStart = false;
-
-    //宽度
-    private int mWidth;
-    //高度
-    private int mHeight;
-    //波纹view
-    private WaveView mWaveView;
-    private Handler mHandler = new Handler(){
+    private Runnable mWaveRunable = new Runnable() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case REFRESH_RIPPLE:
-                    timer = new Timer(true);
-                    timer.schedule(
-                            new TimerTask() {
-                                @Override
-                                public void run() {
-                                    addSize();
-                                }
-                            }, 0, 200);
-                    break;
-                case SIZE_ADD:
-
-                    break;
-                default:
-                    break;
+        public void run() {
+            if (mIsRuning) {
+                newWaveAnimator();
+                invalidate();
+                postDelayed(mWaveRunable, mSpeed);
             }
         }
     };
-    private boolean mIsRefresh;
-    private int mSize = 0;
-    private static final int REFRESH_RIPPLE= 0;
-    private static final int SIZE_ADD = 1;
+
+    //开启水波纹
+    public void start(){
+        if (!mIsRuning){
+            mIsRuning = true;
+            mWaveRunable.run();
+        }
+    }
     public LineChartView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
@@ -104,14 +108,27 @@ public class LineChartView extends ChartView {
         mStyle = new Style(
                 context.getTheme().obtainStyledAttributes(attrs, R.styleable.ChartAttrs, 0, 0));
         mClickableRadius = context.getResources().getDimension(R.dimen.dot_region_radius);
-        mWaveView = new WaveView(context);
-        addView(mWaveView);
     }
-    public void addSize(){
-        mSize = mSize+1;
-        mIsSizeStart = true;
+    public float getMiniRadius(){
+        return mMiniRadius;
     }
 
+    private ValueAnimator newWaveAnimator() {
+        final ValueAnimator mWaveAnimator = new ValueAnimator();
+        mWaveAnimator.setFloatValues(mMiniRadius, mMaxRadius);
+        mWaveAnimator.setDuration(mWaveDuration);
+        mWaveAnimator.setRepeatCount(0);
+        mWaveAnimator.setInterpolator(mInterpolator);
+        mWaveAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+//                (Float) animation.getAnimatedValue();
+            }
+        });
+        mAnimatorList.add(mWaveAnimator);
+        mWaveAnimator.start();
+        return mWaveAnimator;
+    }
     public LineChartView(Context context) {
 
         super(context);
@@ -119,6 +136,10 @@ public class LineChartView extends ChartView {
         setOrientation(Orientation.VERTICAL);
         mStyle = new Style();
         mClickableRadius = context.getResources().getDimension(R.dimen.dot_region_radius);
+
+
+//        mCenterBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.center);
+
     }
 
 
@@ -182,71 +203,9 @@ public class LineChartView extends ChartView {
                 //Draw line
                 canvas.drawPath(linePath, mStyle.mLinePaint);
                 //Draw points
-//                while (true){
-//                Log.d("gg","refresh");
-                drawPoints(canvas, lineSet, mSize);
-//                if (!mHandler.hasMessages(REFRESH_RIPPLE) && !mIsSizeStart){
-//                    mHandler.sendEmptyMessage(REFRESH_RIPPLE);
-//                }
-//                Point dot = (Point) lineSet.getEntry(0);
-//                mWaveView.layout(dot.getX(),dot.getY(),dot.getRadius(),);
+                drawPoints(canvas, lineSet);
                 postInvalidateDelayed(200);
             }
-//        }else {
-//            for (ChartSet set : data) {
-//
-//                final LineSet lineSet = (LineSet) set;
-//
-//                if (lineSet.isVisible()) {
-//
-//                    mStyle.mLinePaint.setColor(lineSet.getColor());
-//                    int[] colors = new int[]{0x000000ff, Color.BLUE};
-//                    float[] position = new float[]{0.1f,0.5f};
-//                    LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
-//                    mStyle.mLinePaint.setShader(lg);
-//                    mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
-//                    applyShadow(mStyle.mLinePaint, lineSet.getAlpha(), lineSet.getShadowDx(), lineSet
-//                            .getShadowDy(), lineSet.getShadowRadius(), lineSet.getShadowColor());
-//
-//                    if (lineSet.isDashed()) mStyle.mLinePaint.setPathEffect(
-//                            new DashPathEffect(lineSet.getDashedIntervals(), lineSet.getDashedPhase()));
-//                    else mStyle.mLinePaint.setPathEffect(null);
-//
-//                    if (!lineSet.isSmooth()) linePath = createLinePath(lineSet);
-//                    else linePath = createSmoothLinePath(lineSet);
-//
-//                    //Draw background
-//                    if (lineSet.hasFill() || lineSet.hasGradientFill())
-//                        canvas.drawPath(createBackgroundPath(new Path(linePath), lineSet), mStyle.mFillPaint);
-//
-//                    //Draw line
-//                    canvas.drawPath(linePath, mStyle.mLinePaint);
-//                    //Draw points
-////                while (true){
-//                    Log.d("gg","refresh");
-////                mOffset = mOffset%10+3;
-//                    drawPoints(canvas, lineSet, mOffset+0f);
-//                    if (mIsRefresh){
-//                        mOffset = mOffset%5+1;
-//                        postInvalidateDelayed(1000);
-//                    }else {
-//                        mOffset = 0;
-//                    }
-////                }
-////                final Runnable runnable;
-////                runnable = new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
-////                        postInvalidate();
-////                        Log.d("line","refresh");
-////                        postDelayed(this,500);
-////                    }
-////                };
-////                post(runnable);
-//
-//                }
-//            }
         }
 
     }
@@ -278,7 +237,7 @@ public class LineChartView extends ChartView {
     /**
      * Responsible for drawing points
      */
-    private void drawPoints(Canvas canvas, LineSet set, int offset) {
+    private void drawPoints(Canvas canvas, LineSet set) {
 
         int begin = set.getBegin();
         int end = set.getEnd();
@@ -293,9 +252,30 @@ public class LineChartView extends ChartView {
                 mStyle.mDotsPaint.setColor(dot.getColor());
 
                 mStyle.mDotsPaint.setAlpha((int) (set.getAlpha() * style.FULL_ALPHA));
+                mWavePaint.setStrokeWidth(1f);
+                mWavePaint.setColor(0xffff0000);
+                mWavePaint.setDither(true);
+                mWavePaint.setStyle(Paint.Style.FILL);
                 applyShadow(mStyle.mDotsPaint, set.getAlpha(), dot.getShadowDx(), dot
                         .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
+                Iterator<ValueAnimator> iterator = mAnimatorList.iterator();
+                while (iterator.hasNext()){
+                    ValueAnimator valueAnimator = iterator.next();
+                    if (!valueAnimator.getAnimatedValue().equals(mMaxRadius)){
+                        //设置透明度
+                        mWavePaint.setAlpha(getAlpha((Float) valueAnimator.getAnimatedValue()));
+                        //画水波纹
+                        canvas.drawCircle(dot.getX(),dot.getY(), (Float) valueAnimator.getAnimatedValue(),mWavePaint);
+                    }else{
+                        valueAnimator.cancel();
+                        iterator.remove();
+                    }
+                }
 
+                if (mAnimatorList.size() > 0){
+                    postInvalidateDelayed(10);
+                }
+                start();
                 // Draw dot
 //                if (offset<= 5){
 //                    for (int j = offset; j >0; j--){
@@ -338,7 +318,14 @@ public class LineChartView extends ChartView {
         }
 
     }
-
+    private int getAlpha(float mRadius){
+        int alpha = 1;
+        if (mMaxRadius > 0){
+            alpha = (int)((1 - (mRadius - mMiniRadius)/(mMaxRadius - mMiniRadius)) * 255);
+        }
+//        Log.e("alpha",alpha + "");
+        return alpha;
+    }
 
     /**
      * Responsible for drawing a (non smooth) line.

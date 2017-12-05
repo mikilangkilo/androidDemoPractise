@@ -78,8 +78,6 @@ public class LineCardTwo extends CardController {
             mTip.setPivotY(Tools.fromDpToPx(25));
         }
         LineSet dataset = new LineSet(mLabels, mValues[0]);
-        int colors[] = new int[]{0xffffffff,0xff004f7f};
-        float positions[] = new float[]{0f, 1f};
         dataset
                 .setColor(Color.parseColor("#004f7f"))
 //                .setGradientFill(colors,positions)
@@ -99,7 +97,7 @@ public class LineCardTwo extends CardController {
         mChart.addData(dataset);
 
         Paint thresPaint = new Paint();
-        thresPaint.setColor(Color.parseColor("#0079ae"));
+        thresPaint.setColor(Color.parseColor("#242a43"));
         thresPaint.setStyle(Paint.Style.STROKE);
         thresPaint.setAntiAlias(true);
         thresPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
@@ -117,8 +115,10 @@ public class LineCardTwo extends CardController {
                 .setTooltips(mTip)
                 .setValueThreshold(80f, 80f, thresPaint)
                 .setAxisBorderValues(0, 110)
+
 //                .show(new Animation().fromXY(0, .5f).withEndAction(action))
         .show();
+        mChart.setBackgroundColor(0xff000000);
         ;
     }
 
