@@ -28,6 +28,7 @@ import android.graphics.Path;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -39,6 +40,8 @@ import com.db.chart.model.Point;
 import com.db.williamchart.R;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
 
@@ -53,14 +56,46 @@ public class LineChartView extends ChartView {
      * Style applied to line chart
      */
     private final Style mStyle;
-
+    private Timer timer;
     /**
      * Radius clickable region
      */
     private float mClickableRadius;
     private int mOffset = 0;
-    private Handler mHandler = new Handler();
+    private boolean mIsSizeStart = false;
+
+    //宽度
+    private int mWidth;
+    //高度
+    private int mHeight;
+    //波纹view
+    private WaveView mWaveView;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case REFRESH_RIPPLE:
+                    timer = new Timer(true);
+                    timer.schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    addSize();
+                                }
+                            }, 0, 200);
+                    break;
+                case SIZE_ADD:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     private boolean mIsRefresh;
+    private int mSize = 0;
+    private static final int REFRESH_RIPPLE= 0;
+    private static final int SIZE_ADD = 1;
     public LineChartView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
@@ -69,8 +104,13 @@ public class LineChartView extends ChartView {
         mStyle = new Style(
                 context.getTheme().obtainStyledAttributes(attrs, R.styleable.ChartAttrs, 0, 0));
         mClickableRadius = context.getResources().getDimension(R.dimen.dot_region_radius);
+        mWaveView = new WaveView(context);
+        addView(mWaveView);
     }
-
+    public void addSize(){
+        mSize = mSize+1;
+        mIsSizeStart = true;
+    }
 
     public LineChartView(Context context) {
 
@@ -108,12 +148,13 @@ public class LineChartView extends ChartView {
         mStyle.clean();
     }
 
+
     @Override
     public void onDrawChart(final Canvas canvas, ArrayList<ChartSet> data) {
 
 //        final LineSet lineSet;
         Path linePath;
-        Log.d("gg",data.size()+"");
+//        Log.d("gg",data.size()+"");
         if (data.size() == 1){
             final LineSet lineSet = (LineSet) data.get(0);
             if (lineSet.isVisible()) {
@@ -142,90 +183,70 @@ public class LineChartView extends ChartView {
                 canvas.drawPath(linePath, mStyle.mLinePaint);
                 //Draw points
 //                while (true){
-                Log.d("gg","refresh");
-//                mOffset = mOffset%10+3;
-                drawPoints(canvas, lineSet, mOffset+0f);
-//                if (mIsRefresh){
-                mOffset = mOffset%10+3;
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        postInvalidate();
-//                    }
-//                },1000);
-                postInvalidateDelayed(500);
-//                }else {
-//                    mOffset = 0;
+//                Log.d("gg","refresh");
+                drawPoints(canvas, lineSet, mSize);
+//                if (!mHandler.hasMessages(REFRESH_RIPPLE) && !mIsSizeStart){
+//                    mHandler.sendEmptyMessage(REFRESH_RIPPLE);
 //                }
-//                }
-//                final Runnable runnable;
-//                runnable = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
-//                        postInvalidate();
-//                        Log.d("line","refresh");
-//                        postDelayed(this,500);
-//                    }
-//                };
-//                post(runnable);
-
+//                Point dot = (Point) lineSet.getEntry(0);
+//                mWaveView.layout(dot.getX(),dot.getY(),dot.getRadius(),);
+                postInvalidateDelayed(200);
             }
-        }else {
-            for (ChartSet set : data) {
-
-                final LineSet lineSet = (LineSet) set;
-
-                if (lineSet.isVisible()) {
-
-                    mStyle.mLinePaint.setColor(lineSet.getColor());
-                    int[] colors = new int[]{0x000000ff, Color.BLUE};
-                    float[] position = new float[]{0.1f,0.5f};
-                    LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
-                    mStyle.mLinePaint.setShader(lg);
-                    mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
-                    applyShadow(mStyle.mLinePaint, lineSet.getAlpha(), lineSet.getShadowDx(), lineSet
-                            .getShadowDy(), lineSet.getShadowRadius(), lineSet.getShadowColor());
-
-                    if (lineSet.isDashed()) mStyle.mLinePaint.setPathEffect(
-                            new DashPathEffect(lineSet.getDashedIntervals(), lineSet.getDashedPhase()));
-                    else mStyle.mLinePaint.setPathEffect(null);
-
-                    if (!lineSet.isSmooth()) linePath = createLinePath(lineSet);
-                    else linePath = createSmoothLinePath(lineSet);
-
-                    //Draw background
-                    if (lineSet.hasFill() || lineSet.hasGradientFill())
-                        canvas.drawPath(createBackgroundPath(new Path(linePath), lineSet), mStyle.mFillPaint);
-
-                    //Draw line
-                    canvas.drawPath(linePath, mStyle.mLinePaint);
-                    //Draw points
-//                while (true){
-                    Log.d("gg","refresh");
-//                mOffset = mOffset%10+3;
-                    drawPoints(canvas, lineSet, mOffset+0f);
-                    if (mIsRefresh){
-                        mOffset = mOffset%5+1;
-                        postInvalidateDelayed(500);
-                    }else {
-                        mOffset = 0;
-                    }
-//                }
-//                final Runnable runnable;
-//                runnable = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
-//                        postInvalidate();
-//                        Log.d("line","refresh");
-//                        postDelayed(this,500);
+//        }else {
+//            for (ChartSet set : data) {
+//
+//                final LineSet lineSet = (LineSet) set;
+//
+//                if (lineSet.isVisible()) {
+//
+//                    mStyle.mLinePaint.setColor(lineSet.getColor());
+//                    int[] colors = new int[]{0x000000ff, Color.BLUE};
+//                    float[] position = new float[]{0.1f,0.5f};
+//                    LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
+//                    mStyle.mLinePaint.setShader(lg);
+//                    mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
+//                    applyShadow(mStyle.mLinePaint, lineSet.getAlpha(), lineSet.getShadowDx(), lineSet
+//                            .getShadowDy(), lineSet.getShadowRadius(), lineSet.getShadowColor());
+//
+//                    if (lineSet.isDashed()) mStyle.mLinePaint.setPathEffect(
+//                            new DashPathEffect(lineSet.getDashedIntervals(), lineSet.getDashedPhase()));
+//                    else mStyle.mLinePaint.setPathEffect(null);
+//
+//                    if (!lineSet.isSmooth()) linePath = createLinePath(lineSet);
+//                    else linePath = createSmoothLinePath(lineSet);
+//
+//                    //Draw background
+//                    if (lineSet.hasFill() || lineSet.hasGradientFill())
+//                        canvas.drawPath(createBackgroundPath(new Path(linePath), lineSet), mStyle.mFillPaint);
+//
+//                    //Draw line
+//                    canvas.drawPath(linePath, mStyle.mLinePaint);
+//                    //Draw points
+////                while (true){
+//                    Log.d("gg","refresh");
+////                mOffset = mOffset%10+3;
+//                    drawPoints(canvas, lineSet, mOffset+0f);
+//                    if (mIsRefresh){
+//                        mOffset = mOffset%5+1;
+//                        postInvalidateDelayed(1000);
+//                    }else {
+//                        mOffset = 0;
 //                    }
-//                };
-//                post(runnable);
-
-                }
-            }
+////                }
+////                final Runnable runnable;
+////                runnable = new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        drawPoints(canvas, lineSet, System.currentTimeMillis()%3);
+////                        postInvalidate();
+////                        Log.d("line","refresh");
+////                        postDelayed(this,500);
+////                    }
+////                };
+////                post(runnable);
+//
+//                }
+//            }
         }
 
     }
@@ -257,7 +278,7 @@ public class LineChartView extends ChartView {
     /**
      * Responsible for drawing points
      */
-    private void drawPoints(Canvas canvas, LineSet set, float offset) {
+    private void drawPoints(Canvas canvas, LineSet set, int offset) {
 
         int begin = set.getBegin();
         int end = set.getEnd();
@@ -270,25 +291,42 @@ public class LineChartView extends ChartView {
 
                 // Style dot
                 mStyle.mDotsPaint.setColor(dot.getColor());
+
                 mStyle.mDotsPaint.setAlpha((int) (set.getAlpha() * style.FULL_ALPHA));
                 applyShadow(mStyle.mDotsPaint, set.getAlpha(), dot.getShadowDx(), dot
                         .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
 
                 // Draw dot
-                canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius()+offset, mStyle.mDotsPaint);
+//                if (offset<= 5){
+//                    for (int j = offset; j >0; j--){
+//                        mStyle.mDotsPaint.setAlpha((int)(255*(1- j/5.0)));
+//                        Log.d("gg",(int)(255*(1- j/5))+"");
+//                        canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius()+j, mStyle.mDotsPaint);//add ripple here
+//                    }
+//                }else {
+//                    int weight = offset % 5;
+//                    for (int j = weight; j >0; j--){
+//                        mStyle.mDotsPaint.setAlpha((int)(255*(1- j/5.0)));
+////                        Log.d("gg",(int)(255*(1- j/5))+"");
+//                        Log.d("gg",dot.getRadius()+"");
+//                        canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius()+j, mStyle.mDotsPaint);//add ripple here
+//                        canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius()+j+5, mStyle.mDotsPaint);
+//                    }
+//                }
+//                Log.d("gg",dot.getX()+"x");//1367
+//                Log.d("gg", dot.getY()+"y");//380
+//                mWaveView.layout((int)dot.getX(),(int)dot.getY(),(int)dot.getX()+mWaveView.getWidth(),(int)dot.getY()+mWaveView.getHeight());
 
                 //Draw dots stroke
-                if (dot.hasStroke()) {
-
-                    // Style stroke
-                    mStyle.mDotsStrokePaint.setStrokeWidth(dot.getStrokeThickness());
-                    mStyle.mDotsStrokePaint.setColor(dot.getStrokeColor());
-                    mStyle.mDotsStrokePaint.setAlpha((int) (set.getAlpha() * style.FULL_ALPHA));
-                    applyShadow(mStyle.mDotsStrokePaint, set.getAlpha(), dot.getShadowDx(), dot
-                            .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
-
-                    canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius(), mStyle.mDotsStrokePaint);
-                }
+//                if (dot.hasStroke()) {
+//                    // Style stroke
+//                    mStyle.mDotsStrokePaint.setStrokeWidth(dot.getStrokeThickness());
+//                    mStyle.mDotsStrokePaint.setColor(dot.getStrokeColor());
+//                    mStyle.mDotsStrokePaint.setAlpha((int) (set.getAlpha() * style.FULL_ALPHA));
+//                    applyShadow(mStyle.mDotsStrokePaint, set.getAlpha(), dot.getShadowDx(), dot
+//                            .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
+//                    canvas.drawCircle(dot.getX(), dot.getY(), dot.getRadius(), mStyle.mDotsStrokePaint);
+//                }
 
                 // Draw drawable
                 if (dot.getDrawable() != null) {

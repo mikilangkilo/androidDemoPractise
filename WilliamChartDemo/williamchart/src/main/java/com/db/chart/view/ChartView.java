@@ -362,7 +362,7 @@ public abstract class ChartView extends RelativeLayout {
                             getInnerChartBottom(), style.labelThresPaint);
 
             // Draw data
-            Log.e("gg","ondraw");
+//            Log.e("gg","ondraw");
             if (!data.isEmpty()) onDrawChart(canvas, data);
 
             // Draw Axis Y
