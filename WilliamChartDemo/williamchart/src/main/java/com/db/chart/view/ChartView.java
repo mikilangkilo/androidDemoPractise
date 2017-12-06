@@ -21,9 +21,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.PathEffect;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -349,7 +354,7 @@ public abstract class ChartView extends RelativeLayout {
             // Draw grid
             if (style.hasVerticalGrid()) drawVerticalGrid(canvas);
             if (style.hasHorizontalGrid()) drawHorizontalGrid(canvas);
-
+            drawBg(canvas);
             // Draw threshold
             if (!mThresholdStartValues.isEmpty())
                 for (int i = 0; i < mThresholdStartValues.size(); i++)
@@ -775,23 +780,34 @@ public abstract class ChartView extends RelativeLayout {
      *
      * @param canvas Canvas to draw on.
      */
+    private int mAxisColor = 0x55ffffff;
     private void drawVerticalGrid(Canvas canvas) {
 
         final float offset = (getInnerChartRight() - getInnerChartLeft()) / style.gridColumns;
         float marker = getInnerChartLeft();
-
         if (style.hasYAxis) marker += offset;
-
+        style.gridPaint.setPathEffect(new DashPathEffect(new float[]{6, 3}, 0));
+        style.gridPaint.setColor(mAxisColor);
         while (marker < getInnerChartRight()) {
             canvas.drawLine(marker, getInnerChartTop(), marker, getInnerChartBottom(),
                     style.gridPaint);
             marker += offset;
         }
-
         canvas.drawLine(getInnerChartRight(), getInnerChartTop(), getInnerChartRight(),
                 getInnerChartBottom(), style.gridPaint);
     }
-
+    private void drawBg(Canvas canvas){
+        final float offset = (getInnerChartRight() - getInnerChartLeft()) / style.gridColumns;
+        float marker = getInnerChartLeft();
+        Paint paint = new Paint();
+        marker += (style.gridColumns-2)*offset;
+        int[] colors = new int[]{Color.TRANSPARENT, 0xf019528e,Color.TRANSPARENT};
+        float[] position = new float[]{0f,0.2f,0.6f};
+        LinearGradient lg = new LinearGradient(marker,getInnerChartTop(), marker+offset - style.axisThickness, getInnerChartBottom(),colors,null, Shader.TileMode.CLAMP);
+        paint.setShader(lg);
+        RectF rect = new RectF(marker,getInnerChartTop(), marker+offset, getInnerChartBottom());
+        canvas.drawRect(rect,paint);
+    }
 
     /**
      * Draw horizontal lines of Grid.
@@ -802,14 +818,15 @@ public abstract class ChartView extends RelativeLayout {
 
         final float offset = (getInnerChartBottom() - getInnerChartTop()) / style.gridRows;
         float marker = getInnerChartTop();
+        style.gridPaint.setPathEffect(null);
+        style.gridPaint.setColor(mAxisColor);
         while (marker < getInnerChartBottom()) {
-            canvas.drawLine(getInnerChartLeft(), marker, getInnerChartRight(), marker,
+            canvas.drawLine(getInnerChartLeft()-10, marker, getInnerChartRight()+10, marker,
                     style.gridPaint);
             marker += offset;
         }
-
         if (!style.hasXAxis)
-            canvas.drawLine(getInnerChartLeft(), getInnerChartBottom(), getInnerChartRight(),
+            canvas.drawLine(getInnerChartLeft()-10, getInnerChartBottom(), getInnerChartRight()+10,
                     getInnerChartBottom(), style.gridPaint);
     }
 

@@ -79,7 +79,7 @@ public class LineCardTwo extends CardController {
         }
         LineSet dataset = new LineSet(mLabels, mValues[0]);
         dataset
-                .setColor(Color.parseColor("#004f7f"))
+                .setColor(Color.WHITE)
 //                .setGradientFill(colors,positions)
                 .setThickness(Tools.fromDpToPx(3))
                 .setSmooth(true)
@@ -96,29 +96,33 @@ public class LineCardTwo extends CardController {
         point.setStrokeColor(Color.parseColor("#0290c3"));
         mChart.addData(dataset);
 
-        Paint thresPaint = new Paint();
-        thresPaint.setColor(Color.parseColor("#242a43"));
-        thresPaint.setStyle(Paint.Style.STROKE);
-        thresPaint.setAntiAlias(true);
-        thresPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
-        thresPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
+//        Paint thresPaint = new Paint();
+//        thresPaint.setColor(Color.parseColor("#6fbcff"));
+//        thresPaint.setStyle(Paint.Style.STROKE);
+//        thresPaint.setAntiAlias(true);
+//        thresPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
+//        thresPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
 
         Paint gridPaint = new Paint();
         gridPaint.setColor(Color.parseColor("#ffffff"));
         gridPaint.setStyle(Paint.Style.STROKE);
         gridPaint.setAntiAlias(true);
         gridPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
+        gridPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
 
         mChart.setXLabels(AxisRenderer.LabelPosition.OUTSIDE)
+                .setLabelsColor(Color.WHITE)
                 .setYLabels(AxisRenderer.LabelPosition.OUTSIDE)
-                .setGrid(4, 7, gridPaint)
+                .setGrid(5, 7, gridPaint)
                 .setTooltips(mTip)
-                .setValueThreshold(80f, 80f, thresPaint)
-                .setAxisBorderValues(0, 110)
+                .setAxisColor(0xb9ffffff)
+//                .setValueThreshold(80f, 80f, thresPaint)
+                .setAxisBorderValues(0, 100,20)
+
 
 //                .show(new Animation().fromXY(0, .5f).withEndAction(action))
         .show();
-        mChart.setBackgroundColor(0xff000000);
+//        mChart.setBackgroundColor(0xff000000);
         ;
     }
 

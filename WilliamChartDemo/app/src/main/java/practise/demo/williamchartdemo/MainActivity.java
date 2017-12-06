@@ -1,6 +1,7 @@
 package practise.demo.williamchartdemo;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -23,24 +24,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportFragmentManager().beginTransaction().add(R.id.container, new ChartsFragment()).commit();
-    }
-
-    private void initView() {
-        mChart = (LineChartView) findViewById(R.id.chart);
-
-        LineSet dataset = new LineSet(mLabels, mValues[0]);
-        dataset.setColor(Color.parseColor("#53c1bd"))
-                .setFill(Color.parseColor("#3d6c73"))
-                .setGradientFill(new int[] {Color.parseColor("#364d5a"), Color.parseColor("#3f7178")},
-                        null);
-        mChart.addData(dataset);
-
-        mChart.setBorderSpacing(1)
-                .setXLabels(AxisRenderer.LabelPosition.NONE)
-                .setYLabels(AxisRenderer.LabelPosition.NONE);
-
-        //Animation anim = new Animation().setEndAction(action);
-
-        mChart.show();
     }
 }

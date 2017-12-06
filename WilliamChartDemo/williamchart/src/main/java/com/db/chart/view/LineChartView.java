@@ -56,9 +56,9 @@ import java.util.logging.Logger;
  */
 public class LineChartView extends ChartView {
     // 初始波纹半径
-    private float mMiniRadius = 7f;
+    private float mMiniRadius = 10f;
     //最大波纹半径
-    private float mMaxRadius = 24f;
+    private float mMaxRadius = 30f;
     //波纹持续时间
     private long mWaveDuration = 5000;
     //波纹创建时间间隔
@@ -82,6 +82,9 @@ public class LineChartView extends ChartView {
      * Radius clickable region
      */
     private float mClickableRadius;
+
+
+    private int mLineColor = 0xff6abcff;
     private Runnable mWaveRunable = new Runnable() {
         @Override
         public void run() {
@@ -181,10 +184,11 @@ public class LineChartView extends ChartView {
             if (lineSet.isVisible()) {
 
                 mStyle.mLinePaint.setColor(lineSet.getColor());
-                int[] colors = new int[]{0x000000ff, Color.BLUE};
-                float[] position = new float[]{0.1f,0.5f};
+                int[] colors = new int[]{Color.TRANSPARENT, mLineColor};
+                float[] position = new float[]{0f,0.2f};
                 LinearGradient lg=new LinearGradient(0,1/2*canvas.getHeight(),canvas.getWidth(),1/2*canvas.getHeight(),colors, position,Shader.TileMode.MIRROR);
                 mStyle.mLinePaint.setShader(lg);
+//                mStyle.mLinePaint.setColor(lineSet.getColor());
                 mStyle.mLinePaint.setStrokeWidth(lineSet.getThickness());
                 applyShadow(mStyle.mLinePaint, lineSet.getAlpha(), lineSet.getShadowDx(), lineSet
                         .getShadowDy(), lineSet.getShadowRadius(), lineSet.getShadowColor());
@@ -204,7 +208,7 @@ public class LineChartView extends ChartView {
                 canvas.drawPath(linePath, mStyle.mLinePaint);
                 //Draw points
                 drawPoints(canvas, lineSet);
-                postInvalidateDelayed(200);
+//                postInvalidateDelayed(200);
             }
         }
 
@@ -253,29 +257,13 @@ public class LineChartView extends ChartView {
 
                 mStyle.mDotsPaint.setAlpha((int) (set.getAlpha() * style.FULL_ALPHA));
                 mWavePaint.setStrokeWidth(1f);
-                mWavePaint.setColor(0xffff0000);
+                mWavePaint.setColor(mLineColor);
                 mWavePaint.setDither(true);
                 mWavePaint.setStyle(Paint.Style.FILL);
                 applyShadow(mStyle.mDotsPaint, set.getAlpha(), dot.getShadowDx(), dot
                         .getShadowDy(), dot.getShadowRadius(), dot.getShadowColor());
                 Iterator<ValueAnimator> iterator = mAnimatorList.iterator();
-                while (iterator.hasNext()){
-                    ValueAnimator valueAnimator = iterator.next();
-                    if (!valueAnimator.getAnimatedValue().equals(mMaxRadius)){
-                        //设置透明度
-                        mWavePaint.setAlpha(getAlpha((Float) valueAnimator.getAnimatedValue()));
-                        //画水波纹
-                        canvas.drawCircle(dot.getX(),dot.getY(), (Float) valueAnimator.getAnimatedValue(),mWavePaint);
-                    }else{
-                        valueAnimator.cancel();
-                        iterator.remove();
-                    }
-                }
 
-                if (mAnimatorList.size() > 0){
-                    postInvalidateDelayed(10);
-                }
-                start();
                 // Draw dot
 //                if (offset<= 5){
 //                    for (int j = offset; j >0; j--){
@@ -314,6 +302,23 @@ public class LineChartView extends ChartView {
                     canvas.drawBitmap(dotsBitmap, dot.getX() - dotsBitmap.getWidth() / 2,
                             dot.getY() - dotsBitmap.getHeight() / 2, mStyle.mDotsPaint);
                 }
+                while (iterator.hasNext()){
+                    ValueAnimator valueAnimator = iterator.next();
+                    if (!valueAnimator.getAnimatedValue().equals(mMaxRadius)){
+                        //设置透明度
+                        mWavePaint.setAlpha(getAlpha((Float) valueAnimator.getAnimatedValue()));
+                        //画水波纹
+                        canvas.drawCircle(dot.getX(),dot.getY(), (Float) valueAnimator.getAnimatedValue(),mWavePaint);
+                    }else{
+                        valueAnimator.cancel();
+                        iterator.remove();
+                    }
+                }
+
+                if (mAnimatorList.size() > 0){
+                    postInvalidateDelayed(10);
+                }
+                start();
             }
         }
 
