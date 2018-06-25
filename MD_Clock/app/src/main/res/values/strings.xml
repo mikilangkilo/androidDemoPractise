@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MD_Clock</string>
+    <string name="navigation_world_clock">WorldClock</string>
+    <string name="navigation_alarm_clock">AlarmClock</string>
+    <string name="navigation_sleep">Sleep</string>
+    <string name="navigation_second_clock">SecondClock</string>
+    <string name="navigation_time_counter">TimeCounter</string>
+</resources>
